@@ -1,6 +1,5 @@
 var mysql = require('mysql');
 var dbConfig = require('./dbConfig');
-var userSQL = require('../model/Usersql');
 var dbGet = require('../model/dbGet');
 
 try {
@@ -12,13 +11,9 @@ try {
 }
 
 exports.get = function (req, res) {
-    // 从连接池获取连接 
+    // get connection from pool 
     pool.getConnection(function(err, connection) { 
-        // 建立连接 增加一个用户信息 
-        dbGet.findByColumn(connection, req, res) 
-        // 以json形式，把操作结果返回给前台页面     
-        // responseJSON(res, result);   
-        // 释放连接  
+        dbGet.findByColumn(connection, req, res)   
         connection.release();  
     });
 }

@@ -1,55 +1,58 @@
-// Given a certain column and target value, get records
-// product/api/get/?c={target_column}&q={target_value}&order={orderby}
 exports.findByColumn = function (connection, req, res) {
-	// 获取前台页面传过来的参数  
-	var param = req.query || req.params;  
-	var column = req.query.uid;
-	var val = req.query.name;
-	console.log("column", column)
-	console.log("val", val)
+	// get parameters from url request, 
+	// req.params from route(/), req.query from parameters(?) 
+	var columnKeys = Object.keys(req.query);
+	var columns = req.query;
+	var table = req.params.table
+	console.log("columns", columns)
+
+	// query assemble begin
+	var queryString = 'SELECT * from ?? where '
+	var queryParams = [table]
+
+	// query multiple columns
+	columnKeys.map( (key, i) => {
+		queryString += i === 0 ? '?? = ? ' : 'and ?? = ? '
+		queryParams.push(key)
+		queryParams.push(columns[key])
+	} )
 
 	// If order not speficied, then use order date
-	if (typeof req.query.order == 'undefined')
+	if (typeof req.query.order != 'undefined')
 	{
-		var order = column;
-	} else {
-		var order = req.query.order;
+		queryString += 'ORDER BY ?? DESC '
+		queryParams.push(req.query.order)
 	}
 
 	// get value of limit
-	if (typeof req.query.limit == 'undefined')
+	var limit = 100
+	if (typeof req.query.limit != 'undefined' && parseInt(req.query.limit) > 1)
 	{
-		var limit = 100;
-	} else {
-		var limit = parseInt(req.query.limit);
+		limit = parseInt(req.query.limit)
 	}
-
-	if (limit > 500 || limit < 1) {
-		limit = 100;
-	}
+	queryString += 'LIMIT ? '
+	queryParams.push(parseInt(limit))
 
 	// get offset value from requested page
-	if (typeof req.query.page == 'undefined')
+	var page = 1;
+	if (typeof req.query.page != 'undefined' && parseInt(req.query.page) > 1)
 	{
-		var page = 1;
-	} else {
-		var page = parseInt(req.query.page);
+		page = parseInt(req.query.page);
 	}
+	queryString += 'OFFSET ?'
+	queryParams.push(limit * (page - 1))
 
-	var offset = limit * (page - 1);
-
-	connection.query('SELECT * from users where ?? = ? ORDER BY ?? DESC LIMIT ? OFFSET ?',
-	[ column, val, order, limit, offset ], function(err, rows, fields) {
+	console.log("queryString", queryString)
+	console.log("queryParams", queryParams)
+	connection.query(queryString, queryParams, function(err, rows, fields) {
   		if (!err){
   			var response = [];
-
 			if (rows.length != 0) {
 				response.push({'result' : 'success', 'data' : rows});
 			} else {
 				response.push({'result' : 'error', 'msg' : 'No Results Found'});
 			}
-
-				res.setHeader('Content-Type', 'application/json');
+			res.setHeader('Content-Type', 'application/json');
 	    	res.status(200).send(JSON.stringify(response));
   		} else {
 		    res.status(400).send(err);
