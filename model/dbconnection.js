@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var dbConfig = require('./dbConfig');
 var userSQL = require('../model/Usersql');
+var dbGet = require('../model/dbGet');
 
 try {
     // load DBConfig.js, create connection pool
@@ -10,27 +11,15 @@ try {
 	console.log('Database Connetion failed:' + e);
 }
 
-// 添加用户
-dbQuery.get('/addUser', function(req, res, next){
+exports.get = function (req, res) {
     // 从连接池获取连接 
-     pool.getConnection(function(err, connection) { 
-       // 获取前台页面传过来的参数  
-       var param = req.query || req.params;   
-       // 建立连接 增加一个用户信息 
-       connection.query(userSQL.insert, [param.uid,param.name], function(err, result) {
-         if(result) {      
-           result = {   
-             code: 200,   
-             msg:'insert successfully'
-           };  
-         }     
-         // 以json形式，把操作结果返回给前台页面     
-         responseJSON(res, result);   
-         // 释放连接  
-         connection.release();  
-       });
-     });
-   });
+    pool.getConnection(function(err, connection) { 
+        // 建立连接 增加一个用户信息 
+        dbGet.findByColumn(connection, req, res) 
+        // 以json形式，把操作结果返回给前台页面     
+        // responseJSON(res, result);   
+        // 释放连接  
+        connection.release();  
+    });
+}
    
-
-  module.exports = dbQuery;

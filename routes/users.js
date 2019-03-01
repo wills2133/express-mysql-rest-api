@@ -10,7 +10,7 @@ var express = require('express');
 var router = express.Router();
 // 导入MySQL模块
 var mysql = require('mysql');
-var dbConfig = require('../model/DBConfig');
+var dbConfig = require('../model/dbConfig');
 var userSQL = require('../model/Usersql');
 // 使用DBConfig.js的配置信息创建一个MySQL连接池
 var pool = mysql.createPool( dbConfig.mysql );
@@ -22,26 +22,33 @@ var responseJSON = function (res, ret) {
     res.json(ret);
   }
 };
+
+var mysqlQuery = require('../model/dbconnection');
+
+
 // 添加用户
 router.get('/addUser', function(req, res, next){
- // 从连接池获取连接 
-  pool.getConnection(function(err, connection) { 
-    // 获取前台页面传过来的参数  
-    var param = req.query || req.params;   
-    // 建立连接 增加一个用户信息 
-    connection.query(userSQL.insert, [param.uid,param.name], function(err, result) {
-      if(result) {      
-        result = {   
-          code: 200,   
-          msg:'insert successfully'
-        };  
-      }     
-      // 以json形式，把操作结果返回给前台页面     
-      responseJSON(res, result);   
-      // 释放连接  
-      connection.release();  
-    });
-  });
+  console.log("req.query3", req.query)
+  console.log("req.params4", req.params)
+  mysqlQuery.get(req, res)
+  // // 从连接池获取连接 
+  // pool.getConnection(function(err, connection) { 
+  //   // 获取前台页面传过来的参数 
+  //   var param = req.query || req.params;   
+  //   // 建立连接 增加一个用户信息 
+  //   connection.query(userSQL.insert, [param.uid,param.name], function(err, result) {
+  //     if(result) {      
+  //       result = {   
+  //         code: 200,   
+  //         msg:'insert successfully'
+  //       };  
+  //     }     
+  //     // 以json形式，把操作结果返回给前台页面     
+  //     responseJSON(res, result);   
+  //     // 释放连接  
+  //     connection.release();  
+  //   });
+  // });
 });
 
 module.exports = router;
