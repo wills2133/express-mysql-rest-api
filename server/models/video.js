@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     // actors: {
     //   type: DataTypes.TEXT
     // },
-    totaltime: {
-      type: DataTypes.DATE
-    },
+    // totaltime: {
+    //   type: DataTypes.DATE
+    // },
     // playedtime: {
     //   type: DataTypes.DATE
     // },
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     season: {
       type: DataTypes.INTEGER
     },
-    episode: {
+    episodes: {
       type: DataTypes.INTEGER
     },
     copyright: {
@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     video.hasOne(models.rating);
     video.hasMany(models.staff);
+    video.hasMany(models.source);
   }
  
   // video.rating = video.hasOne(rating);

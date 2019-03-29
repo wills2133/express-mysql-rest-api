@@ -59,32 +59,6 @@ module.exports = {
     })
     .then( result => { console.log("transaction done") } )
     .catch( error => { console.log("transaction error") } )
-
-    // return Video.bulkCreate(req.body, { 
-    //   individualHooks: true // to return the ids of created rows
-    // })
-    // .then((results) => {
-    //   // Extract the nested objects and link to the corresponding ID of the results
-    //   const createdPromises = []
-    //   for (var key in req.body[0])
-    //   {
-    //     let linkedObjects = []
-    //     if ( (!!req.body[0][key]) && (req.body[0][key].constructor === Array) ){
-    //       linkedObjects = linkCreatedIdToArray(req.body, key, results)
-    //     }
-    //     if ( (!!req.body[0][key]) && (req.body[0][key].constructor === Object) ){
-    //       linkedObjects = linkCreatedIdToObject(req.body, key, results)
-    //     }
-    //     if (linkedObjects.length > 0){
-    //       createdPromises.push( Models[key].bulkCreate(linkedObjects) )
-    //     }
-    //   }
-    //   //sync all promise until all promises complete
-    //   Promise.all( createdPromises ).then( subResults => 
-    //     res.status(201).send( results.concat(...subResults) )
-    //   )
-    // })
-    // .catch(error => res.sendStatus(400).send(error))
   },
   
   retrieve(req, res) {

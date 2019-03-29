@@ -2,7 +2,7 @@
   "development": {
     "username": "beaver",
     "password": "wisdom@2019",
-    "database": "example",
+    "database": "video",
     "host": "192.168.1.98",
     "port": 3306,
     "dialect": "mysql",

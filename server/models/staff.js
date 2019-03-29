@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       position: {
         type: DataTypes.STRING
       },
+      role: {
+        type: DataTypes.STRING
+      },
+      roledescription: {
+        type: DataTypes.STRING
+      },
     },  {
       charset: 'utf8',
       collate: 'utf8_unicode_ci'

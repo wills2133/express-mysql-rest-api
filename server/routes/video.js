@@ -1,26 +1,32 @@
 'use strict'
 
-const videosMiddleware = require('../middleware').videos
-const videoMiddleware = require('../middleware').video
-
-const videosController = require('../controllers').videos
-const videoController = require('../controllers').video
-
 const version = 'v1'
 const code = 'api'
+// generalize
+const modelNames = ['video', 'source']
+const modelMiddleWare = {}
+const modelController = {}
+const mdoelResourcePath = {}
+modelNames.forEach( modelName => {
+  modelMiddleWare[modelName] = require('../middleware')[modelName]
+  modelController[modelName] = require('../controllers')[modelName]
+  mdoelResourcePath[modelName] = `/${version}/${code}/${modelName}/:id?`
+})
+
+const videosMiddleware = require('../middleware').videos
+const videosController = require('../controllers').videos
 const models = 'videos'
-const model = 'video'
 const resourcesPath = `/${version}/${code}/${models}`
-const resourcePath = `/${version}/${code}/${model}/:id?`
 
 module.exports = (app) => {
   // With Resources Path
   app.post(resourcesPath, videosMiddleware.create, videosController.create)
   app.get(resourcesPath, videosController.retrieve)
 
-  // With Resource Path
-  app.post(resourcePath, videosMiddleware.create, videoController.create)
-  app.get(resourcePath, videoController.retrieve)
-  app.put(resourcePath, videoMiddleware.update, videoController.update)
-  app.delete(resourcePath, videoController.delete)
+  modelNames.forEach( modelName => {
+    app.post(mdoelResourcePath[modelName], modelMiddleWare[modelName].create, modelController[modelName].create)
+    app.get(mdoelResourcePath[modelName], modelController[modelName].retrieve)
+    app.put(mdoelResourcePath[modelName], modelMiddleWare[modelName].update, modelController[modelName].update)
+    app.delete(mdoelResourcePath[modelName], modelController[modelName].delete)
+  })
 }

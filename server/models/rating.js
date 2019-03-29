@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     })
     rating.associate = function(models) {
       // associations can be defined here
-    //   rating.belongsTo(models.rating);
+      // rating.belongsTo(models.rating);
     }
 
     // rating.sync({ force: true })
