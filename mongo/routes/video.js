@@ -3,33 +3,25 @@
 const version = 'v1'
 const code = 'api'
 // generalize
-// singular query
 const modelNames = ['video', 'source', 'rating', 'staff', 'tag']
 const modelMiddleWare = {}
 const modelController = {}
 const mdoelResourcePath = {}
 modelNames.forEach( modelName => {
-  modelMiddleWare[modelName] = require('../middlewares')[modelName]
+  modelMiddleWare[modelName] = require('../middleware')[modelName]
   modelController[modelName] = require('../controllers')[modelName]
   mdoelResourcePath[modelName] = `/${version}/${code}/${modelName}/:id?`
 })
-// plural query
-const modelsNames = ['videos', 'staffs']
-const modelsMiddleWare = {}
-const modelsController = {}
-const mdoelsResourcePath = {}
-modelsNames.forEach( modelsName => {
-  modelsMiddleWare[modelsName] = require('../middlewares')[modelsName]
-  modelsController[modelsName] = require('../controllers')[modelsName]
-  mdoelsResourcePath[modelsName] = `/${version}/${code}/${modelsName}`
-})
+
+const videosMiddleware = require('../middleware').videos
+const videosController = require('../controllers').videos
+const models = 'videos'
+const resourcesPath = `/${version}/${code}/${models}`
 
 module.exports = (app) => {
   // With Resources Path
-  modelsNames.forEach( modelsName => {
-    app.post(mdoelsResourcePath[modelsName], modelsMiddleWare[modelsName].create, modelsController[modelsName].create)
-    app.get(mdoelsResourcePath[modelsName], modelsController[modelsName].retrieve)
-  })
+  app.post(resourcesPath, videosMiddleware.create, videosController.create)
+  app.get(resourcesPath, videosController.retrieve)
 
   modelNames.forEach( modelName => {
     app.post(mdoelResourcePath[modelName], modelMiddleWare[modelName].create, modelController[modelName].create)

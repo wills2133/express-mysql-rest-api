@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
     },  {
-      charset: 'utf8',
-      collate: 'utf8_unicode_ci'
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci'
     })
     tag.associate = function(models) {
       // associations can be defined here

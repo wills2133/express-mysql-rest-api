@@ -62,26 +62,28 @@ module.exports = {
   },
   
   retrieve(req, res) {
+    const where = {}
+    if (req.query.where) {
+      Object.keys( JSON.parse(req.query.where) ).forEach
+      const parseWhere = JSON.parse(req.query.where)
+      for (const key in parseWhere) { 
+        if (parseWhere[key]) {
+          where[key] = (key === 'id' || key === 'videoId') ? parseWhere[key] : { $like: '%' + parseWhere[key] + '%' }
+        }
+      }
+    }
+    if (!req.query.order) {
+      req.query.order = '-updatedAt'
+    }
+    console.log("where", where)
     return Video
       .findAndCountAll({
-        offset: parseInt(req.query.offset ? req.query.offset : 0),
+        include: Object.values(Video.associations), // array of associations
+        offset: parseInt(req.query.skip ? req.query.skip : 0),
         limit: parseInt(req.query.limit ? req.query.limit : 50),
-        where: req.query.where ? {
-          $or: [
-            {
-              long: {
-                $like: `%${req.query.where}%`
-              }
-            },
-            {
-              short: {
-                $like: `%${req.query.where}%`
-              }
-            }
-          ]
-        } : undefined,
-        include: [Video.associations.rating,
-          Video.associations.staffs]
+        order: req.query.order[0] == '-' ? [[req.query.order.slice(1), 'DESC']] : [[req.query.order, 'ASC']],
+        where: where,
+        distinct: true // count main rows instead of including sub objects
       })
       .then((results) => {
         if (!results) {

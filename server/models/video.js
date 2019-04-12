@@ -8,45 +8,28 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT
     },
-    // labels: {
-    //   type: DataTypes.STRING
-    // },
-    // actors: {
-    //   type: DataTypes.TEXT
-    // },
-    // totaltime: {
-    //   type: DataTypes.DATE
-    // },
-    // playedtime: {
-    //   type: DataTypes.DATE
-    // },
-    producedtime: {
-      type: DataTypes.DATE
-    },
     season: {
       type: DataTypes.INTEGER
     },
     episodes: {
       type: DataTypes.INTEGER
     },
+    language: {
+      type: DataTypes.STRING
+    },
+    region: {
+      type: DataTypes.STRING
+    },
+    producedtime: {
+      type: DataTypes.DATE
+    },
     copyright: {
       type: DataTypes.STRING
     },
-    // copyrightscope: {
-    //   type: DataTypes.TEXT
-    // },
-    // copyrightexpires: {
-    //   type: DataTypes.DATE
-    // },
-    // rating: {
-    //   type: DataTypes.INTEGER
-    // },
-    // hitrate: {
-    //   type: DataTypes.INTEGER
-    // },
+    
   },  {
-    charset: 'utf8',
-    collate: 'utf8_unicode_ci'
+    charset: 'utf8mb4',
+    collate: 'utf8mb4_unicode_ci'
   })
 
   video.associate = function(models) {
@@ -54,9 +37,11 @@ module.exports = (sequelize, DataTypes) => {
     video.hasOne(models.rating);
     video.hasMany(models.staff);
     video.hasMany(models.source);
+    video.hasMany(models.tag);
+    // video.hasMany(models.rating2);
   }
  
-  // video.rating = video.hasOne(rating);
+  // video.rating = video.hasMany(tag);
   // video.sync({ force: true })
   // rating.sync({ force: true })
   // sequelize.sync()

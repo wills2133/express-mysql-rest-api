@@ -19,9 +19,12 @@ module.exports = (sequelize, DataTypes) => {
       plot: {
         type: DataTypes.TEXT
       },
+      // url: {
+      //   type: DataTypes.TEXT
+      // },
     },  {
-      charset: 'utf8',
-      collate: 'utf8_unicode_ci'
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci'
     })
     source.associate = function(models) {
       // associations can be defined here

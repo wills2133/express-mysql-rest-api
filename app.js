@@ -19,4 +19,7 @@ app.use(expressValidator())
 // Require routes into the application.
 require('./server/routes/video')(app)
 
+// for influx server
+require('./influx/routes/route')(app)
+
 module.exports = app;
