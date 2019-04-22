@@ -3,18 +3,15 @@
 const { validationResult } = require('express-validator/check')
 
 const Models = {}
-Models['videos'] = require('../models').video
-Models['ratings'] = require('../models').rating
+Models['rating'] = require('../models').rating
 Models['staffs'] = require('../models').staff
-Models['sources'] = require('../models').source
-Models['tags'] = require('../models').tag
 
 module.exports = {
-  POST(req, res) {
+  create(req, res) {
     
   },
 
-  GET(req, res) {
+  retrieve(req, res) {
     const where = {}
     if (req.query.where) {
       Object.keys( JSON.parse(req.query.where) ).forEach
@@ -29,9 +26,9 @@ module.exports = {
       req.query.order = '-updatedAt'
     }
     console.log("where", where)
-    return Models[req.params.model]
+    return Models['staffs']
       .findAndCountAll({
-        include: Object.values(Models[req.params.model].associations), // array of associations
+        include: Object.values(Models['staffs'].associations), // array of associations
         offset: parseInt(req.query.skip ? req.query.skip : 0),
         limit: parseInt(req.query.limit ? req.query.limit : 50),
         order: req.query.order[0] == '-' ? [[req.query.order.slice(1), 'DESC']] : [[req.query.order, 'ASC']],

@@ -19,7 +19,7 @@ const expressValidator = require('express-validator')
 app.use(expressValidator())
 
 // Require routes into the application.
-// require('./server/routes/batch')(app) // order is important for path matching
+require('./server/routes/batch')(app) // order is important for path matching
 require('./server/routes/video')(app) // match /v1/api/batch then /v1/api/:model
 
 // for influx server

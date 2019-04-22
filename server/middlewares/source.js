@@ -3,10 +3,10 @@
 const { check } = require('express-validator/check')
 
 module.exports = {
-  PUT: [
+  update: [
   ],
-  POST: [
-    check('season').isInt().withMessage('must be num'),
+  create: [
+    check('season').optional().isInt().withMessage('must be num'),
     check('episode').optional().isInt().withMessage('must be num')
   ]
 }

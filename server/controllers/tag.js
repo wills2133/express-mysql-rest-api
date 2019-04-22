@@ -2,31 +2,29 @@
 
 const { validationResult } = require('express-validator/check')
 
-const Models = {}
-Models['video'] = require('../models').video
-Models['rating'] = require('../models').rating
-Models['staff'] = require('../models').staff
-Models['source'] = require('../models').source
-Models['tag'] = require('../models').tag
+const PrimeModel = require('../models').tag
+
 
 module.exports = {
-  POST(req, res) {
+  create(req, res) {
+    
+    
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
-    return Models[req.params.model].create(req.body,
+    return PrimeModel.create(req.body,
     {
-      include: Object.values(Models[req.params.model].associations)
+      include: Object.values(PrimeModel.associations)
     })
     .then(results => res.status(201).send(results))
     .catch(error => res.sendStatus(400).send(error))
   },
-  GET(req, res) {
-      return Models[req.params.model]
+  retrieve(req, res) {
+    return PrimeModel
       .findById(req.params.id, 
       {
-        include: Object.values(Models[req.params.model].associations)
+        include: Object.values(PrimeModel.associations)
       })
       .then((result) => {
         if (!result) {
@@ -38,14 +36,14 @@ module.exports = {
       })
       .catch((error) => res.sendStatus(400).send(error));
   },
-  PUT(req, res) {
-    console.log("req", req.body);
-    
+  update(req, res) {
+
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
-    return Models[req.params.model]
+    
+    return PrimeModel
       .findById(req.params.id)
       .then(result => {
         if (!result) {
@@ -54,7 +52,10 @@ module.exports = {
           })
         }
         return result
-          .update(req.body,
+          .update({
+            long: req.body.long,
+            short: req.body.short
+          },
           {
             useMaster : true
           })
@@ -63,8 +64,8 @@ module.exports = {
       })
       .catch((error) => res.sendStatus(400).send(error))
   },
-  DELETE(req, res) {
-    return Models[req.params.model]
+  delete(req, res) {
+    return PrimeModel
       .findById(req.params.id)
       .then(result => {
         if (!result) {

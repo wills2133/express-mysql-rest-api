@@ -2,28 +2,28 @@
 
 const { validationResult } = require('express-validator/check')
 
-const Video = require('../models').video
+const PrimeModel = require('../models').rating
 
 
 module.exports = {
   create(req, res) {
-    console.log(req.body)
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() })
+      console.log("errors", errors.array())
+      return res.status(422).json(errors.array())
     }
-    return Video.create(req.body,
+    return PrimeModel.create(req.body,
     {
-      include: Object.values(Video.associations) // array of associations
+      include: Object.values(PrimeModel.associations)
     })
     .then(results => res.status(201).send(results))
     .catch(error => res.sendStatus(400).send(error))
   },
   retrieve(req, res) {
-    return Video
+    return PrimeModel
       .findById(req.params.id, 
       {
-        include: [Video.associations.rating]
+        include: Object.values(PrimeModel.associations)
       })
       .then((result) => {
         if (!result) {
@@ -42,7 +42,7 @@ module.exports = {
       return res.status(422).json({ errors: errors.array() })
     }
     
-    return Video
+    return PrimeModel
       .findById(req.params.id)
       .then(result => {
         if (!result) {
@@ -64,7 +64,7 @@ module.exports = {
       .catch((error) => res.sendStatus(400).send(error))
   },
   delete(req, res) {
-    return Video
+    return PrimeModel
       .findById(req.params.id)
       .then(result => {
         if (!result) {
