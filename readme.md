@@ -128,3 +128,67 @@ DELETE `https://beaver.sstzy.net/api/user/users?obj-age=30&obj-name=李测试&ob
 在validatiton中添加规则，并在下面的function中对相应的类型进行处理
 
 ![img](https://bitbucket.org/wisdomaic/beaver/raw/aea963d9105150bcf37cf8e6901a274842c0ffb4/readme/validation.png)
+
+## influx schema
+
+### 传感器
+```javascript
+module.exports = (Influx) => {
+  const schema = {
+    measurement: 'sensor',
+    fields: {
+      beatrate: Influx.FieldType.INTEGER,
+      heartrate: Influx.FieldType.INTEGER,
+    },
+    tags: [
+      'ip',
+      'sensorid', 
+      'deviceid', //product id of device that is installed in
+      'location', //device location
+      'isactivated', //device is activated
+    ]
+  }
+  return schema
+}
+```
+##### field:
+- beatrate：脉率
+- heartrate：心率（以心率传感器为例）
+
+###### tag:
+- ip：发送信号的ip，
+- sensorid：传感器ID，
+- deviceid：传感器所属装置ID，
+- longitude：经度，
+- latitude：纬度，
+- location：传感器所属位置，
+- isactivated：传感器是否工作中，
+
+### 积分
+```javascript
+module.exports = (Influx) => {
+  const schema = {
+    measurement: 'point',
+    fields: {
+      record: Influx.FieldType.INTEGER,
+      balance: Influx.FieldType.INTEGER,
+    },
+    tags: [
+      'userid',
+      'locationid', 
+      'eventid', 
+      'isbalanceupdated', //balance is updated this time point, i.e. last updated point
+    ]
+  }
+  return schema
+}
+```
+##### field:
+- record：操作记录，正数是存入积分，负数是消耗积分
+- balance：上次积分结算的数目
+
+##### tag:
+- userid：用户ID，
+- locationid：所属地区ID，
+- eventid：事件ID，
+- isbalanceupdated：本次操作是否对进行balance结算，这个tag的作用就方便统计balance时可以追溯到上一次balance而不用统计所有的操作

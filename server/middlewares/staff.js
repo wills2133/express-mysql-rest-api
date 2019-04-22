@@ -3,10 +3,10 @@
 const { check } = require('express-validator/check')
 
 module.exports = {
-  update: [
+  PUT: [
   ],
-  create: [
-    check('name').optional().isLength({ min: 1 }).withMessage('must be at least 1 chars long'),
-    check('position').optional().isLength({ min: 1 }).withMessage('must be at least 1 chars long'),
+  POST: [
+    // check('name').optional().isLength({ min: 1 }).withMessage('must be at least 1 chars long'),
+    // check('position').optional().isLength({ min: 1 }).withMessage('must be at least 1 chars long'),
   ]
 }
