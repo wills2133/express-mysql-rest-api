@@ -1,0 +1,23 @@
+{
+  "development": {
+    "host": "192.168.1.56",
+    "port":  8086,
+    "database": "test",
+    "username": "beaver",
+    "password": "wisdom@2019"
+  },
+  "developmentShu": {
+    "host": "192.168.1.77",
+    "port":  8086,
+    "database": "goose",
+    "username": "goose",
+    "password": "goose123" 
+  },
+  "test": {
+    "host": "192.168.1.182",
+    "port":  8086,
+    "database": "express_response_db"
+  },
+  "production": {
+  }
+}

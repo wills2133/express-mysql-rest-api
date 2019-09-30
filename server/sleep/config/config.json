@@ -1,0 +1,96 @@
+{
+  "development": {
+    "username": "beaver",
+    "password": "wisdom@2019",
+    "database": "health",
+    "host": "192.168.1.98",
+    "port": 3306,
+    "dialect": "mysql",
+    "pool": {
+      "max": 10,
+      "idle": 30000
+    },
+    "replication" : {
+      "write": {
+        "username": "beaver",
+        "password": "wisdom@2019",
+        "host": "192.168.1.98"
+      },
+      "read": [
+        {
+          "username": "beaver",
+          "password": "wisdom@2019",
+          "host": "192.168.1.98"
+        },
+        {
+          "username": "beaver",
+          "password": "wisdom@2019",
+          "host": "192.168.1.145"
+        }
+      ]
+    },
+    "logging": true
+  },
+  "test": {
+    "username": "user",
+    "password": "password",
+    "database": "express",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql",
+    "pool": {
+      "max": 10,
+      "idle": 30000
+    },
+    "replication" : {
+      "write": {
+        "username": "user",
+        "password": "password",
+        "host": "127.0.0.1"
+      },
+      "read": [
+        {
+          "username": "user",
+          "password": "password",
+          "host": "127.0.0.1"
+        },
+        {
+          "username": "user",
+          "password": "password",
+          "host": "127.0.0.1"
+        }
+      ]
+    }
+  },
+  "production": {
+    "username": "user",
+    "password": "password",
+    "database": "express",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql",
+    "pool": {
+      "max": 10,
+      "idle": 30000
+    },
+    "replication" : {
+      "write": {
+        "username": "user",
+        "password": "password",
+        "host": "127.0.0.1"
+      },
+      "read": [
+        {
+          "username": "user",
+          "password": "password",
+          "host": "127.0.0.1"
+        },
+        {
+          "username": "user",
+          "password": "password",
+          "host": "127.0.0.1"
+        }
+      ]
+    }
+  }
+}
